@@ -4,13 +4,13 @@ export default function Home() {
   return (
     <div className="container">
       <Head>
-        <title>Create Next App</title>
+        <title>Hola mundo</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
         <h1 className="title">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Bienvenido a <a href="https://nextjs.org">Next.js!</a>
         </h1>
 
         <p className="description">
@@ -67,6 +67,14 @@ export default function Home() {
           flex-direction: column;
           justify-content: center;
           align-items: center;
+          
+          p{
+            color: red;
+          }
+          
+          a{
+            color: blue;
+          }
         }
 
         main {
