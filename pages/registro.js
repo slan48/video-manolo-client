@@ -7,24 +7,29 @@ import {changeLoggedInState} from "../store";
 import {useDispatch} from "react-redux";
 import Router from "next/router";
 
-const iniciarSesion = () => {
+const registro = () => {
   const dispatch = useDispatch();
 
   const [form, setForm] = useState({
     email: "",
-    password: ""
+    password: "",
+    name: "",
+    rut: "",
+    address: "",
+    phone: ""
   });
 
   const [loadingHttpRequest, setLoadingHttpRequest] = useState(false);
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
   useEffect(() => {
-    if (form.email.length && form.password.length){
+    const {email, password, name, rut, address, phone} = form;
+    if (email.length && password.length && name.length && rut.length && address.length && phone.length){
       setSubmitDisabled(false)
     } else{
       setSubmitDisabled(true)
     }
-  }, [form.email, form.password])
+  }, [form.email, form.password, form.name, form.rut, form.address, form.phone])
 
   const handleChange = (e) => {
     setForm({
@@ -36,14 +41,14 @@ const iniciarSesion = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoadingHttpRequest(true);
-    axios.post('users/login', form)
+    axios.post('users/register', form)
       .then(async res => {
         Cookies.set('token', res.data.token)
         dispatch(changeLoggedInState(true));
         setLoadingHttpRequest(false)
         await Router.push('/')
         Swal.fire({
-          title: "Inicio de sesión exitoso",
+          title: "Registro exitoso",
           text: 'Ahora puede reservar las películas que desee',
           icon: "success"
         })
@@ -60,10 +65,10 @@ const iniciarSesion = () => {
   }
 
   return (
-    <div className="login-page">
+    <div className="register-page">
       <div className="container">
         <div className="form-box">
-          <h2>Iniciar sesión</h2>
+          <h2>Regístrate</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <input onChange={handleChange} type="text" name="email" placeholder="Correo electrónico" className="form-control" />
@@ -71,8 +76,20 @@ const iniciarSesion = () => {
             <div className="form-group">
               <input onChange={handleChange} type="password" name="password" placeholder="Contraseña" className="form-control" />
             </div>
-            <button disabled={loadingHttpRequest || submitDisabled} type="submit" className="btn btn-light">Iniciar sesión</button>
-            <p>¿No tienes cuenta? <Link href="/registro"><a href="/registro">Regístrate</a></Link></p>
+            <div className="form-group">
+              <input onChange={handleChange} type="text" name="name" placeholder="Nombre completo" className="form-control" />
+            </div>
+            <div className="form-group">
+              <input onChange={handleChange} type="text" name="rut" placeholder="RUT" className="form-control" />
+            </div>
+            <div className="form-group">
+              <input onChange={handleChange} type="text" name="address" placeholder="Dirección" className="form-control" />
+            </div>
+            <div className="form-group">
+              <input onChange={handleChange} type="text" name="phone" placeholder="Teléfono" className="form-control" />
+            </div>
+            <button disabled={loadingHttpRequest || submitDisabled} type="submit" className="btn btn-light">Registrarse</button>
+            <p>¿Ya tienes una cuenta? <Link href="/iniciar-sesion"><a href="/iniciar-sesion">Inicia sesión</a></Link></p>
           </form>
         </div>
       </div>
@@ -104,4 +121,4 @@ const iniciarSesion = () => {
   );
 };
 
-export default iniciarSesion;
+export default registro;
