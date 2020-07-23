@@ -5,7 +5,8 @@ import axios from "./lib/axios";
 
 const initialState = {
   movies: [],
-  selectedMovie: null
+  selectedMovie: null,
+  loggedIn: false
 }
 
 const actionTypes = {
@@ -38,6 +39,10 @@ export const setMovie = (movieId) => async dispatch => {
   }
 }
 
+export const changeLoggedInState = (newState) => dispatch => {
+  dispatch({type: actionTypes.CHANGE_LOGGED_IN_STATE, payload: newState})
+}
+
 const reducers = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_MOVIES:
@@ -45,6 +50,9 @@ const reducers = (state = initialState, action) => {
 
     case actionTypes.SET_SELECTED_MOVIE:
       return {...state, selectedMovie: action.payload}
+
+    case actionTypes.CHANGE_LOGGED_IN_STATE:
+      return {...state, loggedIn: action.payload}
 
     default:
       return state

@@ -1,10 +1,20 @@
 import React from 'react';
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import Router from "next/router";
+import Cookies from 'js-cookie';
+import {changeLoggedInState} from "../store";
 
 const Header = (props) => {
+  const dispatch = useDispatch();
   const loggedIn = useSelector(state => state.loggedIn);
+
+  const handleCloseSession = (e) => {
+    e.preventDefault();
+    Cookies.remove('token')
+    dispatch(changeLoggedInState(false))
+    Router.push('/');
+  }
 
   return (
     <div className="container">
@@ -19,12 +29,12 @@ const Header = (props) => {
           {!loggedIn ?
             <li>
               <Link href="/iniciar-sesion">
-                <a href="/iniciar-sesion">Iniciar sesión</a>
+                <a className="btn btn-light" href="/iniciar-sesion">Iniciar sesión</a>
               </Link>
             </li>
             :
             <li>
-              <a href="/cerrar-sesion">Cerrar sesión</a>
+              <a onClick={handleCloseSession} className="btn btn-danger" href="/cerrar-sesion">Cerrar sesión</a>
             </li>
           }
         </ul>
@@ -50,7 +60,7 @@ const Header = (props) => {
           padding: 0;
           margin: 0;
           
-          a{
+          a:not(.btn){
             padding: 0 20px;
             color: #fff;
           }
