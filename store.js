@@ -2,16 +2,15 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import axios from "./lib/axios";
-import Cookie from "js-cookie";
 import {createWrapper, HYDRATE} from 'next-redux-wrapper';
 
-const initialState = {
+export const initialState = {
   movies: [],
   selectedMovie: null,
   loggedIn: false
 }
 
-const actionTypes = {
+export const actionTypes = {
   SET_MOVIES: 'SET_MOVIES',
   SET_SELECTED_MOVIE: 'SET_SELECTED_MOVIE',
   CHANGE_LOGGED_IN_STATE: 'CHANGE_LOGGED_IN_STATE',
@@ -25,7 +24,7 @@ export const setMovies = () => async dispatch => {
     const movies = data.movies;
     dispatch({type: actionTypes.SET_MOVIES, payload: movies})
   } catch (e) {
-    console.log(e);
+    if (process.env.NEXT_PUBLIC_ENV !== 'testing') console.log(e);
     dispatch({type: actionTypes.SET_MOVIES, payload: []})
   }
 }
@@ -36,7 +35,7 @@ export const setMovie = (movieId) => async dispatch => {
     const movie = data.movie;
     dispatch({type: actionTypes.SET_SELECTED_MOVIE, payload: movie})
   } catch (e) {
-    console.log(e);
+    if (process.env.NEXT_PUBLIC_ENV !== 'testing') console.log(e);
     dispatch({type: actionTypes.SET_SELECTED_MOVIE, payload: null})
   }
 }
@@ -45,7 +44,7 @@ export const changeLoggedInState = (newState) => dispatch => {
   dispatch({type: actionTypes.CHANGE_LOGGED_IN_STATE, payload: newState})
 }
 
-const reducer = (state = initialState, action) => {
+export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case HYDRATE:
       return {...state, ...action.payload}

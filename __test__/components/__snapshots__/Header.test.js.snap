@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Header /> Header Snapshot 1`] = `
+<div
+  className="container"
+>
+  <header
+    className="jsx-1681203433 animate__animated animate__fadeIn"
+  >
+    <h1
+      className="jsx-1681203433"
+      onClick={[Function]}
+    >
+      Video Manolo
+    </h1>
+    <ul
+      className="jsx-1681203433"
+    >
+      <li
+        className="jsx-1681203433"
+      >
+        <a
+          className="jsx-1681203433"
+          href="/"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Home
+        </a>
+      </li>
+      <li
+        className="jsx-1681203433"
+      >
+        <a
+          className="jsx-1681203433 btn btn-light"
+          href="/iniciar-sesion"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Iniciar sesión
+        </a>
+      </li>
+    </ul>
+  </header>
+</div>
+`;

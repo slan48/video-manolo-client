@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MoviesList /> Loader Snapshot 1`] = `
+<div
+  className="jsx-1480517449 movies-list-component"
+>
+  <div
+    className="jsx-1480517449 loader-container"
+  >
+    <div
+      className="jsx-1940039920"
+    >
+      <div
+        className="jsx-1940039920 lds-grid"
+      >
+        <div
+          className="jsx-1940039920"
+        />
+        <div
+          className="jsx-1940039920"
+        />
+        <div
+          className="jsx-1940039920"
+        />
+        <div
+          className="jsx-1940039920"
+        />
+        <div
+          className="jsx-1940039920"
+        />
+        <div
+          className="jsx-1940039920"
+        />
+        <div
+          className="jsx-1940039920"
+        />
+        <div
+          className="jsx-1940039920"
+        />
+        <div
+          className="jsx-1940039920"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
