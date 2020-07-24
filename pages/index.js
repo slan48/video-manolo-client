@@ -1,10 +1,25 @@
 import Head from 'next/head'
 import MoviesList from "../components/MoviesList";
 import {useDispatch} from "react-redux";
-import {setMovies} from "../store";
+import {changeLoggedInState, setMovies, wrapper} from "../store";
 import {useEffect} from "react";
+import cookies from "next-cookies";
+import {AuthToken} from "../lib/auth_token";
 
-export default function Home({movies}) {
+export const getServerSideProps = wrapper.getServerSideProps(
+  (context) => {
+    console.log('2. Page.getServerSideProps uses the store to dispatch things');
+    const auth = new AuthToken(cookies(context).token);
+    if (auth.isValid()){
+      context.store.dispatch(changeLoggedInState(true));
+    } else{
+      context.store.dispatch(changeLoggedInState(false));
+    }
+    context.store.dispatch(setMovies());
+  }
+);
+
+export default function Home() {
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -2,6 +2,8 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import axios from "./lib/axios";
+import Cookie from "js-cookie";
+import {createWrapper, HYDRATE} from 'next-redux-wrapper';
 
 const initialState = {
   movies: [],
@@ -43,8 +45,11 @@ export const changeLoggedInState = (newState) => dispatch => {
   dispatch({type: actionTypes.CHANGE_LOGGED_IN_STATE, payload: newState})
 }
 
-const reducers = (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case HYDRATE:
+      return {...state, ...action.payload}
+
     case actionTypes.SET_MOVIES:
       return {...state, movies: action.payload}
 
@@ -61,6 +66,11 @@ const reducers = (state = initialState, action) => {
 
 const middleware = [thunk];
 
-const store = createStore(reducers, initialState, composeWithDevTools(applyMiddleware(...middleware)));
+// create store
+export const store = createStore(reducer, composeWithDevTools(applyMiddleware(...middleware)));
 
-export default store;
+// create a makeStore function
+const makeStore = context => store;
+
+// export an assembled wrapper
+export const wrapper = createWrapper(makeStore, {debug: true});

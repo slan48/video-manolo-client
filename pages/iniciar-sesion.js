@@ -3,9 +3,27 @@ import Link from "next/link";
 import axios from "../lib/axios";
 import Swal from "sweetalert2";
 import Cookies from 'js-cookie';
-import {changeLoggedInState} from "../store";
+import {changeLoggedInState, wrapper} from "../store";
 import {useDispatch} from "react-redux";
 import Router from "next/router";
+import {AuthToken} from "../lib/auth_token";
+import cookies from "next-cookies";
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (context) => {
+    console.log('2. Page.getServerSideProps uses the store to dispatch things');
+    const auth = new AuthToken(cookies(context).token);
+    if (auth.isValid()){
+      context.res.writeHead(302, {
+        Location: '/',
+      });
+      context.res.end();
+      context.store.dispatch(changeLoggedInState(true));
+    } else{
+      context.store.dispatch(changeLoggedInState(false));
+    }
+  }
+);
 
 const iniciarSesion = () => {
   const dispatch = useDispatch();
@@ -38,10 +56,9 @@ const iniciarSesion = () => {
     setLoadingHttpRequest(true);
     axios.post('users/login', form)
       .then(async res => {
-        Cookies.set('token', res.data.token)
         dispatch(changeLoggedInState(true));
         setLoadingHttpRequest(false)
-        await Router.push('/')
+        await AuthToken.storeToken(res.data.token, '/');
         Swal.fire({
           title: "Inicio de sesión exitoso",
           text: 'Ahora puede reservar las películas que desee',

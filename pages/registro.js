@@ -3,11 +3,29 @@ import Link from "next/link";
 import axios from "../lib/axios";
 import Swal from "sweetalert2";
 import Cookies from 'js-cookie';
-import {changeLoggedInState} from "../store";
+import {changeLoggedInState, wrapper} from "../store";
 import {useDispatch} from "react-redux";
 import Router from "next/router";
+import cookies from "next-cookies";
+import {AuthToken} from "../lib/auth_token";
 
-const registro = () => {
+export const getServerSideProps = wrapper.getServerSideProps(
+  (context) => {
+    console.log('2. Page.getServerSideProps uses the store to dispatch things');
+    const auth = new AuthToken(cookies(context).token);
+    if (auth.isValid()){
+      context.res.writeHead(302, {
+        Location: '/',
+      });
+      context.res.end();
+      context.store.dispatch(changeLoggedInState(true));
+    } else{
+      context.store.dispatch(changeLoggedInState(false));
+    }
+  }
+);
+
+const registro = ({auth}) => {
   const dispatch = useDispatch();
 
   const [form, setForm] = useState({
