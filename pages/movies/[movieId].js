@@ -21,7 +21,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     }
 
     return {
-      props: {token: auth.token}
+      props: {token: auth.token ? auth.token : ""}
     }
   }
 );
@@ -41,7 +41,7 @@ const Movie = ({token}) => {
 
   const handleStartReservation = async (e) => {
     e.preventDefault();
-    if (!loggedIn) Router.push('/iniciar-sesion')
+    if (!loggedIn) return Router.push('/iniciar-sesion')
 
     setLoadingHttpRequest(true)
     axios.defaults.headers.common['Authorization'] = token;
@@ -63,7 +63,7 @@ const Movie = ({token}) => {
 
   const handleCompleteReservation = async (e) => {
     e.preventDefault();
-    if (!loggedIn) Router.push('/iniciar-sesion')
+    if (!loggedIn) return Router.push('/iniciar-sesion')
 
     setLoadingHttpRequest(true)
     axios.defaults.headers.common['Authorization'] = token;
