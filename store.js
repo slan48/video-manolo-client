@@ -73,4 +73,4 @@ export const store = createStore(reducer, composeWithDevTools(applyMiddleware(..
 const makeStore = context => store;
 
 // export an assembled wrapper
-export const wrapper = createWrapper(makeStore, {debug: true});
+export const wrapper = createWrapper(makeStore, {debug: process.env.NEXT_PUBLIC_ENV === 'development'});

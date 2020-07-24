@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import Router from "next/router";
 import Cookies from 'js-cookie';
 import {changeLoggedInState} from "../store";
+import Swal from "sweetalert2";
 
 const Header = (props) => {
   const dispatch = useDispatch();
@@ -11,9 +12,24 @@ const Header = (props) => {
 
   const handleCloseSession = (e) => {
     e.preventDefault();
-    Cookies.remove('token')
-    dispatch(changeLoggedInState(false))
-    Router.push('/');
+    Swal.fire({
+      title: 'Cerrar sesión',
+      text: '¿Estás seguro que deseas cerrar la sesión?',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Cerrar sesión',
+      cancelButtonColor: 'rgba(150,150,150,0.98)',
+      confirmButtonColor: '#dc3545',
+      focusCancel: true
+    })
+      .then(res => {
+        console.log('cerrar seison', res);
+        if (res.isConfirmed){
+          Cookies.remove('token')
+          dispatch(changeLoggedInState(false))
+          Router.push('/');
+        }
+      })
   }
 
   return (
